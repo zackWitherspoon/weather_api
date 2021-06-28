@@ -20,19 +20,10 @@ def getWeather():
     response = requests.get(buildString(lattitude, longitude, get_api_key()))
     json_list = response.json()
     new_json_str = '{}'
-    json_dict = {}
     new_json = json.loads(new_json_str)
-    print('Current timestampt: ' + str(json_list['current']['dt']) + ' and current timezone_offset: ' + str(json_list['timezone_offset']) + ' And final total = ' + str(int(json_list['current']['dt']) - int(json_list['timezone_offset'])) )
     new_json.update({"date":datetime.utcfromtimestamp(json_list['daily'][0]['dt']).strftime('%Y-%m-%d')})
-    json_dict["date"] = datetime.utcfromtimestamp(json_list['daily'][0]['dt']).strftime('%Y-%m-%d')
     new_json.update({"type":json_list['current']['weather'][0]['main']})
-    json_dict['type'] = json_list['current']['weather'][0]['main']
     new_json.update({"description":json_list['current']['weather'][0]['description']})
-    json_dict['description'] = json_list['current']['weather'][0]['description']
-    for key, value in json_dict.items():
-        print(key, value)
-
-
     new_json.update({"temperature":json_list['current']['temp']})
     new_json.update({"wind":{}})
     new_json['wind'] = {"speed":json_list['current']['wind_speed'],"bearing":json_list['current']['wind_deg']}
